@@ -9,7 +9,7 @@
     'summary': '',
     'depends': [
         'l10n_ar_ux',
-        'l10n_ar_edi',
+        'l10n_ar',
     ],
     'external_dependencies': {
         'python': ['zeep'],
