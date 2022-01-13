@@ -295,7 +295,8 @@ class AccountJournal(models.Model):
             # 11 - Condición frente a Ingresos Brutos
             # 1 es inscripto, 2 no inscripto con oblig. a insc y 3 no insc sin
             # oblig a insc. TODO implementar 2
-            gross_income_type = partner.l10n_ar_gross_income_type
+            # gross_income_type = partner.l10n_ar_gross_income_type
+            gross_income_type = partner.gross_income_type
             if not gross_income_type:
                 raise ValidationError(_(
                     'Debe setear el tipo de inscripción de IIBB del partner '
@@ -633,7 +634,8 @@ class AccountJournal(models.Model):
             # 12 - Situación IB del Retenido
             # 1: Local 2: Convenio Multilateral
             # 4: No inscripto 5: Reg.Simplificado
-            if not partner.l10n_ar_gross_income_type:
+            #if not partner.l10n_ar_gross_income_type:
+            if not partner.gross_income_type:
                 raise ValidationError(_(
                     'Debe setear el tipo de inscripción de IIBB del partner '
                     '"%s" (id: %s)') % (partner.name, partner.id))
@@ -641,10 +643,12 @@ class AccountJournal(models.Model):
             # ahora se reportaria para cualquier inscripto el numero de cuit
             gross_income_mapping = {
                 'local': '5', 'multilateral': '2', 'exempt': '4'}
-            content += gross_income_mapping[partner.l10n_ar_gross_income_type]
+            # content += gross_income_mapping[partner.l10n_ar_gross_income_type]
+            content += gross_income_mapping[partner.gross_income_type]
 
             # 13 - Nro Inscripción IB del Retenido
-            if partner.l10n_ar_gross_income_type == 'exempt':
+            #if partner.l10n_ar_gross_income_type == 'exempt':
+            if partner.gross_income_type == 'exempt':
                 content += '00000000000'
             else:
                 content += partner.ensure_vat()
